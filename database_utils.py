@@ -61,6 +61,7 @@ class DatabaseConnector:
 
         with engine.connect() as connection:
             data.to_sql(table_name, connection, index=False, if_exists='replace')
+            
 # import yaml
 # from sqlalchemy import create_engine, MetaData
 # import pandas as pd
