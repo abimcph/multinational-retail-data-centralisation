@@ -2,6 +2,8 @@ import pandas as pd
 from database_utils import DatabaseConnector
 import tabula
 import requests
+import boto3
+import io
 class DataExtractor:
     """Extracts data from various sources."""
 
@@ -70,6 +72,36 @@ class DataExtractor:
                 print(f"Failed to retrieve data for store number {store_number}")
         return pd.DataFrame(all_stores)
 
+    def extract_from_s3(self, s3_url):
+        """
+        Extracts data from an S3 bucket and returns it as a pandas DataFrame.
+
+        Args:
+        s3_url (str): S3 URL of the file (e.g., 's3://bucket-name/file.csv').
+
+        Returns:
+        pandas.DataFrame: Data extracted from the S3 file.
+        """
+        # Parse bucket name and file path from s3_url
+        bucket_name = s3_url.split('/')[2]
+        file_path = '/'.join(s3_url.split('/')[3:])
+
+        # Initialize S3 client
+        s3_client = boto3.client('s3')
+
+        # Get object from S3
+        obj = s3_client.get_object(Bucket=bucket_name, Key=file_path)
+        
+        # Read data into DataFrame
+        return pd.read_csv(io.BytesIO(obj['Body'].read()))
+    
+    def extract_json_from_s3(self, s3_url):
+        bucket_name = s3_url.split('/')[2]
+        file_path = '/'.join(s3_url.split('/')[3:])
+        s3_client = boto3.client('s3')
+        obj = s3_client.get_object(Bucket=bucket_name, Key=file_path)
+        data = json.load(io.BytesIO(obj['Body'].read()))
+        return pd.DataFrame(data)
 # import pandas as pd
 # from sqlalchemy import inspect
 # import tabula

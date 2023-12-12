@@ -14,7 +14,7 @@ def main():
     print("Tables in the database:", tables)
 
     # Assuming we know the table name containing user data
-    user_table_name = 'legacy_users'  # Replace with actual table name
+    user_table_name = 'legacy_users'
 
     # Check if the user table is in the list of tables
     if user_table_name in tables:
@@ -30,7 +30,8 @@ def main():
         # Perform in-memory operations on cleaned_user_data here
         # For example, analysis, visualization, exporting to a file, etc.
         print("Cleaned user data is ready for in-memory operations.")
-        # Example: cleaned_user_data.to_csv('cleaned_user_data.csv', index=False)
+        cleaned_user_data.to_csv('cleaned_user_data.csv', index=False)
+        
     else:
         print(f"Table '{user_table_name}' not found in the database.")
 
@@ -95,26 +96,45 @@ def main():
     # Handle the cleaned data (e.g., analysis, visualization, saving to file)
     print("Cleaned product data is ready for in-memory operations.")
     # Example: cleaned_product_data.to_csv('cleaned_product_data.csv', index=False)
+    
+    # Initialize data extractor, data cleaner, and database connector
+    data_extractor = DataExtractor()
+    data_cleaner = DataCleaning()
+    db_connector = DatabaseConnector()
+
+    # List all tables in the database
+    tables = db_connector.list_db_tables()
+    print("Tables in the database:", tables)
+
+    # Identify the table containing order information
+    # Replace 'orders_table_name' with the actual name of the orders table
+    orders_table_name = 'orders_table_name'  # Adjust this based on actual table name
+
+    if orders_table_name in tables:
+        # Extract orders data
+        orders_data = data_extractor.read_rds_table(db_connector, orders_table_name)
+        print("Extracted Orders Data:")
+        print(orders_data.head())  # Print first few rows of the orders data
+
+        # Clean the orders data
+        cleaned_orders_data = data_cleaner.clean_orders_data(orders_data)
+        print("Cleaned Orders Data:")
+        print(cleaned_orders_data.head())  # Print first few rows of the cleaned data
+    else:
+        print(f"Table '{orders_table_name}' not found in the database.")
+
+    # S3 URL for the date events data
+    s3_url_date_events = 'https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json'
+
+    # Extract date events data from S3
+    date_events_data = data_extractor.extract_json_from_s3(s3_url_date_events)
+
+    # Clean the date events data
+    cleaned_date_events_data = data_cleaner.clean_date_events_data(date_events_data)
+
+    # Handle the cleaned data (e.g., analysis, visualization, saving to file)
+    print("Cleaned date events data is ready for in-memory operations.")
+    # Example: cleaned_date_events_data.to_csv('cleaned_date_events_data.csv', index=False)
 
 if __name__ == "__main__":
     main()
-
-# from database_utils import DatabaseConnector
-# from data_extraction import DataExtractor
-# from data_cleaning import DataCleaning
-
-# def main():
-#     db_connector = DatabaseConnector()
-
-#     # Extract User Data
-#     user_data = DataExtractor.read_rds_table(db_connector, 'legacy_users')
-
-#     # Clean User Data
-#     cleaned_user_data = DataCleaning.clean_user_data(user_data)
-
-#     # Upload Cleaned Data
-#     db_connector.upload_to_db(cleaned_user_data, 'dim_users')
-
-# if __name__ == "__main__":
-#     main()
-
