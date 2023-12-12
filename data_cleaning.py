@@ -119,19 +119,3 @@ class DataCleaning:
         # Implement the cleaning logic for date events data
         cleaned_df = df.copy()
         return cleaned_df
-# import pandas as pd
-# class DataCleaning:
-#     def __init__(self):
-#         pass
-
-#     @staticmethod
-#     def clean_user_data(data_frame):
-#         # Assuming 'data_frame' is the DataFrame to be cleaned
-#         try:
-#             # Example: Remove rows with null values
-#             cleaned_df = data_frame.dropna()
-#             # Add more cleaning steps as needed
-#             return cleaned_df
-#         except Exception as e:
-#             print(f"Error cleaning user data: {e}")
-#             return None
