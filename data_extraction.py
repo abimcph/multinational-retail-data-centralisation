@@ -1,7 +1,6 @@
-# data_extraction.py
 import pandas as pd
 from database_utils import DatabaseConnector
-
+import tabula
 class DataExtractor:
     """Extracts data from various sources."""
 
@@ -19,7 +18,17 @@ class DataExtractor:
         engine = db_connector.init_db_engine()
         return pd.read_sql_table(table_name, engine)
 
+    def retrieve_pdf_data(self, pdf_url):
+        """
+        Extracts data from a PDF document and returns it as a pandas DataFrame.
 
+        Args:
+        pdf_url (str): URL or path to the PDF document.
+
+        Returns:
+        pandas.DataFrame: Data extracted from the PDF.
+        """
+        return tabula.read_pdf(pdf_url, pages='all', multiple_tables=True)
 
 # import pandas as pd
 # from sqlalchemy import inspect

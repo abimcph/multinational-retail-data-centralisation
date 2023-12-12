@@ -18,7 +18,20 @@ class DataCleaning:
         # Example: cleaned_df.dropna(inplace=True) # Drops rows with NULL values
         return cleaned_df
 
+    def clean_card_data(self, df):
+        """
+        Cleans card details data in a DataFrame.
 
+        Args:
+        df (pandas.DataFrame): DataFrame with card details.
+
+        Returns:
+        pandas.DataFrame: Cleaned DataFrame.
+        """
+        # Implement cleaning logic here
+        cleaned_df = df.copy()
+        # Example: cleaned_df.dropna(inplace=True) # Drops rows with NULL values
+        return cleaned_df
 
 # import pandas as pd
 # class DataCleaning:
