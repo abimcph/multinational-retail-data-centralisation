@@ -1,71 +1,38 @@
 import pandas as pd
 
 class DataCleaning:
-    @staticmethod
-    def clean_user_data(user_data):
-        """
-        Clean the user data by handling NULL values, correcting date errors,
-        fixing incorrectly typed values.
+    """Cleans and preprocesses data."""
 
-        Parameters:
-        - user_data (pd.DataFrame): The input DataFrame containing user data.
+    def clean_user_data(self, df):
+        """
+        Cleans user data in a DataFrame.
+
+        Args:
+        df (pandas.DataFrame): The DataFrame with user data.
 
         Returns:
-        - pd.DataFrame: Cleaned user data.
+        pandas.DataFrame: Cleaned DataFrame.
         """
-        cleaned_data = user_data.copy()
+        # Implement cleaning logic here (handling NULLs, date errors, etc.)
+        cleaned_df = df.copy()
+        # Example: cleaned_df.dropna(inplace=True) # Drops rows with NULL values
+        return cleaned_df
 
-        # Handling NULL values
-        cleaned_data = cleaned_data.dropna()
 
-        # Correcting date errors
-        cleaned_data['join_date'] = pd.to_datetime(cleaned_data['join_date'], errors='coerce')
 
-        # Fixing incorrectly typed values
-        cleaned_data['user_uuid'] = pd.to_numeric(cleaned_data['user_uuid'], errors='coerce')
-
-        # The line below has been removed, so no filtering based on a condition
-        # cleaned_data = cleaned_data[~(cleaned_data['condition_column'] == 'condition_value')]
-
-        return cleaned_data
-    
 # import pandas as pd
-# from database_utils import DatabaseConnector
 # class DataCleaning:
+#     def __init__(self):
+#         pass
 
-#     def clean_user_data(user_data):
-#         # Method to clean the user data
-#         cleaned_data = user_data.copy()
-
-#         # Handling NULL values
-#         cleaned_data = cleaned_data.dropna()
-
-#         # Correcting date errors (assuming 'date_column' is the date column in the DataFrame)
-#         cleaned_data['opening_date'] = pd.to_datetime(cleaned_data['opening_date'], errors='coerce')
-
-#         # Fixing incorrectly typed values
-#         # (assuming 'numeric_column' is a numeric column in the DataFrame)
-#         cleaned_data['numeric_column'] = pd.to_numeric(cleaned_data['numeric_column'], errors='coerce')
-
-#         return cleaned_data
-# #     def __init__(self):
-# #         self.db_connector = DatabaseConnector()
-
-# #     # T3S6: Create a method called clean_user_data which will perform the cleaning of the user data
-# #     def clean_user_data(self, df):
-# #         print(f"Type of df: {type(df)}")
-# #         # Remove rows with NULL values
-# #         cleaned_df = df.dropna()
-
-# #         # Handle date errors 
-# #         try:
-# #             df['opening_date'] = pd.to_datetime(df['opening_date'], format='%Y-%m-%d')
-# #         except ValueError as e:
-# #             print(f"Error converting dates: {e}")
-            
-# #         return df
-    
-# #         self.db_connector.upload_to_db(cleaned_df, 'your_table_name')
-
-# # data_cleaner = DataCleaning()
-# # cleaned_df = data_cleaner.clean_user_data(df)
+#     @staticmethod
+#     def clean_user_data(data_frame):
+#         # Assuming 'data_frame' is the DataFrame to be cleaned
+#         try:
+#             # Example: Remove rows with null values
+#             cleaned_df = data_frame.dropna()
+#             # Add more cleaning steps as needed
+#             return cleaned_df
+#         except Exception as e:
+#             print(f"Error cleaning user data: {e}")
+#             return None
