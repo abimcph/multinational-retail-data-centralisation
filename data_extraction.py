@@ -1,6 +1,7 @@
 import pandas as pd
 from database_utils import DatabaseConnector
 import tabula
+import requests
 class DataExtractor:
     """Extracts data from various sources."""
 
@@ -29,6 +30,45 @@ class DataExtractor:
         pandas.DataFrame: Data extracted from the PDF.
         """
         return tabula.read_pdf(pdf_url, pages='all', multiple_tables=True)
+    
+    def list_number_of_stores(self, endpoint, headers):
+        """
+        Retrieves the number of stores from the API.
+
+        Args:
+        endpoint (str): API endpoint to get the number of stores.
+        headers (dict): Headers to include in the API request.
+
+        Returns:
+        int: Number of stores.
+        """
+        response = requests.get(endpoint, headers=headers)
+        if response.status_code == 200:
+            return response.json()['number_of_stores']
+        else:
+            raise Exception(f"API request failed with status code {response.status_code}")
+
+    def retrieve_stores_data(self, endpoint, headers, num_stores):
+        """
+        Retrieves data for all stores from the API.
+
+        Args:
+        endpoint (str): API endpoint to retrieve store details.
+        headers (dict): Headers to include in the API request.
+        num_stores (int): Number of stores to retrieve.
+
+        Returns:
+        pandas.DataFrame: DataFrame containing details of all stores.
+        """
+        all_stores = []
+        for store_number in range(1, num_stores + 1):
+            store_endpoint = endpoint.format(store_number=store_number)
+            response = requests.get(store_endpoint, headers=headers)
+            if response.status_code == 200:
+                all_stores.append(response.json())
+            else:
+                print(f"Failed to retrieve data for store number {store_number}")
+        return pd.DataFrame(all_stores)
 
 # import pandas as pd
 # from sqlalchemy import inspect
